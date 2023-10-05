@@ -1,6 +1,7 @@
 module.exports = {
   name: "Silent Push",
   acronym: "SP",
+  polarityIntegrationUuid: "3133dc50-63ca-11ee-9f00-b7a8aebacae2",
   request: {
     // Provide the path to your certFile. Leave an empty string to ignore this option.
     cert: "",
