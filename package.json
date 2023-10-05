@@ -5,9 +5,9 @@
   "main": "./integration.js",
   "private": true,
   "dependencies": {
-    "request": "2.76.0",
     "async": "2.1.2",
-    "dotenv": "16.3.1"
+    "dotenv": "16.3.1",
+    "postman-request": "^2.88.1-postman.33"
   },
   "keywords": [
     "threat intelligence",

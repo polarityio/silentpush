@@ -1,5 +1,6 @@
-const request = require("request");
+const request = require("postman-request");
 const async = require("async");
+
 require("dotenv").config();
 
 let Logger;
