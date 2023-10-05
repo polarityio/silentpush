@@ -14,7 +14,7 @@ module.exports = {
     // the url parameter (by embedding the auth info in the uri)
     proxy: "",
   },
-  logging: { level: "trace" },
+  logging: { level: "info" },
   description:
     "Enrich alerts with Whois, Risk Scores, and much more context from Silent Push Threat Intelligence",
   defaultColor: "dark-blue-gray",

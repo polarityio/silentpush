@@ -8,7 +8,7 @@
     "ca": "",
     "proxy": ""
   },
-  "logging": { "level": "trace" },
+  "logging": { "level": "info" },
   "description": "Enrich alerts with Whois, Risk Scores, and much more context from Silent Push Threat Intelligence",
   "defaultColor": "dark-blue-gray",
   "entityTypes": ["IPv4", "IPv6", "domain", "url"],
