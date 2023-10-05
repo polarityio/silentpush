@@ -9,6 +9,9 @@
     "async": "2.1.2",
     "dotenv": "16.3.1"
   },
-  "keywords": ["threat intelligence", "enrichment"],
+  "keywords": [
+    "threat intelligence",
+    "enrichment"
+  ],
   "author": "jorgeley@silentpush.com"
 }
