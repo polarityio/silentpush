@@ -16,6 +16,14 @@ If you don't have a Silent Push account yet, go to https://explore.silentpush.co
 
 All you need is just set the API Key in the integration options
 
+## Silent Push URL
+
+The URL for your Silent Push instance.
+
+## Silent Push API Key
+
+If you don't have an api key yet, sign up on https://explore.silentpush.com/register
+
 ## Installation Instructions
 
 Installation instructions for integrations are provided on the [PolarityIO GitHub Page](https://polarityio.github.io/).

@@ -1,5 +1,6 @@
 const request = require('postman-request');
 const async = require('async');
+const { options } = require('./config/config');
 
 require('dotenv').config();
 
@@ -9,8 +10,6 @@ let SILENTPUSH_API_URL;
 
 function startup(logger) {
   Logger = logger;
-  SILENTPUSH_API_URL =
-    process.env.SILENTPUSH_API_URL || 'https://app.silentpush.com/api/';
 }
 
 doLookup = (entities, options, cb) => {
@@ -35,23 +34,27 @@ doLookup = (entities, options, cb) => {
           next(err);
         });
       } else if (entity.isURL) {
-        parseIoC(entity.value, function (parsedIoC) {
-          Logger.info(`parsedIoC: ${parsedIoC}`);
-          entity.value = parsedIoC;
-          enrichDomain(entity, (err, result) => {
-            if (!err) {
-              lookupResults.push(result); // add to our results if there was no error
-            } else {
-              enrichIPv4(entity, (err, result) => {
-                if (!err) {
-                  lookupResults.push(result);
-                }
-                next(err);
-              });
-            }
-            next(err);
-          });
-        });
+        parseIoC(
+          entity.value,
+          function (parsedIoC) {
+            Logger.info(`parsedIoC: ${parsedIoC}`);
+            entity.value = parsedIoC;
+            enrichDomain(entity, (err, result) => {
+              if (!err) {
+                lookupResults.push(result); // add to our results if there was no error
+              } else {
+                enrichIPv4(entity, (err, result) => {
+                  if (!err) {
+                    lookupResults.push(result);
+                  }
+                  next(err);
+                });
+              }
+              next(err);
+            });
+          },
+          options
+        );
       } else {
         next(null);
       }
@@ -107,10 +110,10 @@ enrichDomain = (entity, done) => {
   });
 };
 
-getEnrichmentURI = (entity, type = 'ipv4') => {
+getEnrichmentURI = (entity, type = 'ipv4', options) => {
   const enrichment_url =
-    SILENTPUSH_API_URL +
-    `v1/merge-api/explore/enrich/${type}/${entity.value}` +
+    options.url +
+    `/v1/merge-api/explore/enrich/${type}/${entity.value}` +
     '?explain=1&scan_data=1&with_metadata=1&query_type=Enrichment&' +
     'query_origin=ENRICHMENT&is_voluntary=1';
   return {
@@ -124,9 +127,9 @@ getEnrichmentURI = (entity, type = 'ipv4') => {
   };
 };
 
-parseIoC = (ioc, done) => {
+parseIoC = (ioc, done, options) => {
   const uri = {
-    url: SILENTPUSH_API_URL + 'v2/utils/parse-ioc/',
+    url: options.url + '/v2/utils/parse-ioc/',
     body: { ioc: ioc },
     json: true,
     // verify: false,
