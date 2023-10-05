@@ -1,16 +1,16 @@
-const request = require("postman-request");
-const async = require("async");
+const request = require('postman-request');
+const async = require('async');
 
-require("dotenv").config();
+require('dotenv').config();
 
 let Logger;
-let apiKey = "";
+let apiKey = '';
 let SILENTPUSH_API_URL;
 
 function startup(logger) {
   Logger = logger;
   SILENTPUSH_API_URL =
-    process.env.SILENTPUSH_API_URL || "https://app.silentpush.com/api/";
+    process.env.SILENTPUSH_API_URL || 'https://app.silentpush.com/api/';
 }
 
 doLookup = (entities, options, cb) => {
@@ -57,7 +57,7 @@ doLookup = (entities, options, cb) => {
       }
     },
     function (err) {
-      Logger.trace({ lookupResults: lookupResults }, "lookupResults");
+      Logger.trace({ lookupResults: lookupResults }, 'lookupResults');
       cb(err, lookupResults);
     }
   );
@@ -79,15 +79,15 @@ enrichIPv4 = (entity, done) => {
       entity: entity,
       data: {
         summary: summary(body.response),
-        details: body.response,
-      },
+        details: body.response
+      }
     });
   });
 };
 
 enrichDomain = (entity, done) => {
   Logger.info(entity);
-  request(getEnrichmentURI(entity, "domain"), function (err, response, body) {
+  request(getEnrichmentURI(entity, 'domain'), function (err, response, body) {
     Logger.info(`enrichDomain error: ${err}`);
     Logger.info(`enrichDomain response: ${JSON.stringify(response)}`);
     Logger.info(`enrichDomain body: ${JSON.stringify(body)}`);
@@ -100,40 +100,40 @@ enrichDomain = (entity, done) => {
       data: {
         summary: summary(body.response),
         details: {
-          domainData: body.response,
-        },
-      },
+          domainData: body.response
+        }
+      }
     });
   });
 };
 
-getEnrichmentURI = (entity, type = "ipv4") => {
+getEnrichmentURI = (entity, type = 'ipv4') => {
   const enrichment_url =
     SILENTPUSH_API_URL +
     `v1/merge-api/explore/enrich/${type}/${entity.value}` +
-    "?explain=1&scan_data=1&with_metadata=1&query_type=Enrichment&" +
-    "query_origin=ENRICHMENT&is_voluntary=1";
+    '?explain=1&scan_data=1&with_metadata=1&query_type=Enrichment&' +
+    'query_origin=ENRICHMENT&is_voluntary=1';
   return {
     url: enrichment_url,
     json: true,
     // verify: false,
     headers: {
-      "X-Api-Key": apiKey,
-      "User-Agent": "PolarityIO",
-    },
+      'X-Api-Key': apiKey,
+      'User-Agent': 'PolarityIO'
+    }
   };
 };
 
 parseIoC = (ioc, done) => {
   const uri = {
-    url: SILENTPUSH_API_URL + "v2/utils/parse-ioc/",
+    url: SILENTPUSH_API_URL + 'v2/utils/parse-ioc/',
     body: { ioc: ioc },
     json: true,
     // verify: false,
     headers: {
-      "X-Api-Key": apiKey,
-      "User-Agent": "PolarityIO",
-    },
+      'X-Api-Key': apiKey,
+      'User-Agent': 'PolarityIO'
+    }
   };
   request.post(uri, function (err, response, body) {
     Logger.info(`parseIoC error: ${err}`);
@@ -170,5 +170,5 @@ function summary(response) {
 
 module.exports = {
   startup: startup,
-  doLookup: doLookup,
+  doLookup: doLookup
 };
