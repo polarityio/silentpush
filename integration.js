@@ -1,12 +1,11 @@
 const request = require('postman-request');
 const async = require('async');
-const { options } = require('./config/config');
+const { options } = require('../exabeam_1696902358/config/config');
 
 require('dotenv').config();
 
 let Logger;
 let apiKey = '';
-let SILENTPUSH_API_URL;
 
 function startup(logger) {
   Logger = logger;
@@ -68,7 +67,7 @@ doLookup = (entities, options, cb) => {
 
 enrichIPv4 = (entity, done) => {
   Logger.info(entity);
-  request(getEnrichmentURI(entity), function (err, response, body) {
+  request(getEnrichmentURI(entity, 'ipv4', options), function (err, response, body) {
     Logger.info(`enrichIPv4 error: ${err}`);
     Logger.info(`enrichIPv4 response: ${JSON.stringify(response)}`);
     Logger.info(`enrichIPv4 body: ${JSON.stringify(body)}`);
@@ -90,7 +89,7 @@ enrichIPv4 = (entity, done) => {
 
 enrichDomain = (entity, done) => {
   Logger.info(entity);
-  request(getEnrichmentURI(entity, 'domain'), function (err, response, body) {
+  request(getEnrichmentURI(entity, 'domain', options), function (err, response, body) {
     Logger.info(`enrichDomain error: ${err}`);
     Logger.info(`enrichDomain response: ${JSON.stringify(response)}`);
     Logger.info(`enrichDomain body: ${JSON.stringify(body)}`);
