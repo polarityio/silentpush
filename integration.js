@@ -110,7 +110,7 @@ enrichDomain = (entity, options, done) => {
 
 getEnrichmentURI = (entity, type = 'ipv4', options) => {
   const enrichment_url =
-    options.url +
+    'https://app.silentpush.com/api' +
     `/v1/merge-api/explore/enrich/${type}/${entity.value}` +
     '?explain=1&scan_data=1&with_metadata=1&query_type=Enrichment&' +
     'query_origin=ENRICHMENT&is_voluntary=1';
@@ -157,11 +157,11 @@ function summary(response) {
 
   if (response && response.domain_string_frequency_probability) {
     tags.push(`SP Risk Score: ${response.sp_risk_score}`);
-    if (response && response.domain_string_frequency_probability.whois_age) {
+    if (response && response.domaininfo.whois_age) {
       tags.push(`WhoIs Age: ${response.domaininfo.whois_age}`);
     }
 
-    if (response && response.domain_string_frequency_probability.registrar) {
+    if (response && response.domaininfo.registrar) {
       tags.push(`Registrar: ${response.domaininfo.registrar}`);
     }
   }
@@ -173,8 +173,3 @@ module.exports = {
   startup: startup,
   doLookup: doLookup
 };
-
-// I would change the jargon from the API jargon of Rows to the UI jargon of Logs so the user can correlate the results they get with the UI a bit easier
-// Usually with log searcher integrations like this we don't do many summary tags past the log count found. However, I would recommend looking into the log results and anything that could be suspicious or malicious, and create a count for that and make it a summary tag. That info would be a useful summary tag.
-// It might make sense to make a User Option to specify which fields they want to see from the logs they want to see, and create one summary tag with the unique values from that field concatined, and limited to 100ish characters with a ... at the end if it's over that character limit. Sort of like how we do with splunk: https://github.com/polarityio/splunk/blob/master/config/config.js#L202
-// or here in Microsoft Defender:
