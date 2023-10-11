@@ -1,6 +1,5 @@
 const request = require('postman-request');
 const async = require('async');
-const { options } = require('../exabeam_1696902358/config/config');
 
 require('dotenv').config();
 
@@ -174,3 +173,8 @@ module.exports = {
   startup: startup,
   doLookup: doLookup
 };
+
+// I would change the jargon from the API jargon of Rows to the UI jargon of Logs so the user can correlate the results they get with the UI a bit easier
+// Usually with log searcher integrations like this we don't do many summary tags past the log count found. However, I would recommend looking into the log results and anything that could be suspicious or malicious, and create a count for that and make it a summary tag. That info would be a useful summary tag.
+// It might make sense to make a User Option to specify which fields they want to see from the logs they want to see, and create one summary tag with the unique values from that field concatined, and limited to 100ish characters with a ... at the end if it's over that character limit. Sort of like how we do with splunk: https://github.com/polarityio/splunk/blob/master/config/config.js#L202
+// or here in Microsoft Defender:
