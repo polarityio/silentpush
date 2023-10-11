@@ -18,14 +18,14 @@ doLookup = (entities, options, cb) => {
     entities,
     function (entity, next) {
       if (entity.isIPv4) {
-        enrichIPv4(entity, function (err, result) {
+        enrichIPv4(entity, options, function (err, result) {
           if (!err) {
             lookupResults.push(result); // add to our results if there was no error
           }
           next(err); // processing complete
         });
       } else if (entity.isDomain) {
-        enrichDomain(entity, function (err, result) {
+        enrichDomain(entity, options, function (err, result) {
           if (!err) {
             lookupResults.push(result);
           }
@@ -37,11 +37,11 @@ doLookup = (entities, options, cb) => {
           function (parsedIoC) {
             Logger.info(`parsedIoC: ${parsedIoC}`);
             entity.value = parsedIoC;
-            enrichDomain(entity, (err, result) => {
+            enrichDomain(entity, options, (err, result) => {
               if (!err) {
                 lookupResults.push(result); // add to our results if there was no error
               } else {
-                enrichIPv4(entity, (err, result) => {
+                enrichIPv4(entity, options, (err, result) => {
                   if (!err) {
                     lookupResults.push(result);
                   }
@@ -64,7 +64,7 @@ doLookup = (entities, options, cb) => {
   );
 };
 
-enrichIPv4 = (entity, done) => {
+enrichIPv4 = (entity, options, done) => {
   Logger.info(entity);
   request(getEnrichmentURI(entity, 'ipv4', options), function (err, response, body) {
     Logger.info(`enrichIPv4 error: ${err}`);
@@ -86,7 +86,7 @@ enrichIPv4 = (entity, done) => {
   });
 };
 
-enrichDomain = (entity, done) => {
+enrichDomain = (entity, options, done) => {
   Logger.info(entity);
   request(getEnrichmentURI(entity, 'domain', options), function (err, response, body) {
     Logger.info(`enrichDomain error: ${err}`);
