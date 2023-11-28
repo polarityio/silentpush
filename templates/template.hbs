@@ -1,0 +1,399 @@
+{{#if details}}
+  {{! domain-ns-reputation}}
+  {{#if details.domainData}}
+    <h1 class="p-title">
+      {{fa-icon icon="info" fixedWidth=true}}
+      Domain Frequency Probability
+    </h1>
+    <div class="ns-reputation">
+      <div>
+        <span class="p-key">Expired:</span>
+        <span class="p-value">{{details.domainData.ns_reputation.is_expired}}</span>
+      </div>
+      <div>
+        <span class="p-key">Parked:</span>
+        <span class="p-value">{{details.domainData.ns_reputation.is_parked}}</span>
+      </div>
+      <div>
+        <span class="p-key">Sinkholed:</span>
+        <span class="p-value">{{details.domainData.ns_reputation.is_sinkholed}}</span>
+      </div>
+      {{#if details.domainData.ns_reputation.ns_reputation_max}}
+        <div>
+          <span class="p-key">Repuation Max:</span>
+          <span
+            class="p-value"
+          >{{details.domainData.ns_reputation.ns_reputation_max}}</span>
+        </div>
+      {{/if}}
+      {{#if details.domainData.ns_reputation.ns_reputation_score}}
+        <div>
+          <span class="p-key">Reputation Score:</span>
+          <span
+            class="p-value"
+          >{{details.domainData.ns_reputation.ns_reputation_score}}</span>
+        </div>
+      {{/if}}
+    </div>
+
+    <h1 class="p-title">
+      {{fa-icon icon="server" fixedWidth=true}}
+      Server Repuation
+    </h1>
+    {{#each details.domainData.ns_reputation.ns_srv_reputation as |srv|}}
+      <div class="ns-srv-reputation">
+        {{#if srv.domain}}
+          <div>
+            <span class="p-key">Domain:</span>
+            <span class="p-value">{{srv.domain}}</span>
+          </div>
+        {{/if}}
+        {{#if srv.ns_server}}
+          <div>
+            <span class="p-key">Server:</span>
+            <span class="p-value">{{srv.ns_server}}</span>
+          </div>
+        {{/if}}
+        {{#if srv.ns_server_domain_density}}
+          <div>
+            <span class="p-key">Domain Density: </span>
+            <span class="p-value">{{srv.ns_server_domain_density}}</span>
+          </div>
+        {{/if}}
+        {{#if srv.ns_server_domains_listed}}
+          <div>
+            <span class="p-key">Domain Listed: </span>
+            <span class="p-value">{{srv.ns_server_domains_listed}}</span>
+          </div>
+        {{/if}}
+        {{#if srv.ns_server_reputation}}
+          <div>
+            <span class="p-key">Server Repuation: </span>
+            <span class="p-value">{{srv.ns_server_reputation}}</span>
+          </div>
+        {{/if}}
+      </div>
+    {{/each}}
+    <h1 class="p-title">
+      {{fa-icon icon="certificate" fixedWidth=true}}
+      Certificates
+    </h1>
+    {{#each details.domainData.scan_data.certificates as |cert|}}
+      <div class="ns-srv-reputation">
+        {{#if cert.domain}}
+          <div>
+            <span class="p-key">Domain:</span>
+            <span class="p-value">{{cert.domain}}</span>
+          </div>
+        {{/if}}
+        {{#if cert.hostname}}
+          <div>
+            <span class="p-key">Hostname:</span>
+            <span class="p-value">{{cert.hostname}}</span>
+          </div>
+        {{/if}}
+        {{#if cert.ip}}
+          <div>
+            <span class="p-key">IP:</span>
+            <span class="p-value">{{cert.ip}}</span>
+          </div>
+        {{/if}}
+        {{#if cert.is_expired}}
+          <div>
+            <span class="p-key">Expired:</span>
+            <span class="p-value">{{cert.is_expired}}</span>
+          </div>
+        {{/if}}
+        {{#if cert.issuer_common_name}}
+          <div>
+            <span class="p-key">Issuer Common Name:</span>
+            <span class="p-value">{{cert.issuer_common_name}}</span>
+          </div>
+        {{/if}}
+        {{#if cert.issuer_organization}}
+          <div>
+            <span class="p-key">Issuer Organization:</span>
+            <span class="p-value">{{cert.issuer_organization}}</span>
+          </div>
+        {{/if}}
+        {{#if cert.not_after}}
+          <div>
+            <span class="p-key">Not After:</span>
+            <span class="p-value">{{cert.not_after}}</span>
+          </div>
+        {{/if}}
+        {{#if cert.not_before}}
+          <div>
+            <span class="p-key">Not Before:</span>
+            <span class="p-value">{{cert.not_before}}</span>
+          </div>
+        {{/if}}
+        {{#if cert.scan_date}}
+          <div>
+            <span class="p-key">Scan Date:</span>
+            <span class="p-value">{{cert.scan_date}}</span>
+          </div>
+        {{/if}}
+        {{#if cert.serial_number}}
+          <div>
+            <span class="p-key">Serial Number:</span>
+            <span class="p-value">{{cert.serial_number}}</span>
+          </div>
+        {{/if}}
+      </div>
+    {{/each}}
+
+    <h1 class="p-title">
+      {{fa-icon icon="flag" fixedWidth=true}}
+      Domain Host Flags
+    </h1>
+    {{#each details.domainData.host_flags as |flag|}}
+      <div class="host-flags">
+        {{#if flag.domain}}
+          <div>
+            <span class="p-key">Domain:</span>
+            <span class="p-value">{{flag.domain}}</span>
+          </div>
+        {{/if}}
+        <div>
+          <span class="p-key">Expired Cert:</span>
+          <span class="p-value">{{flag.host_has_expired_certificate}}</span>
+        </div>
+        <div>
+          <span class="p-key">Open Directory:</span>
+          <span class="p-value">{{flag.host_has_open_directory}}</span>
+        </div>
+        <div>
+          <span class="p-key">Open S3 Bucket:</span>
+          <span class="p-value">{{flag.host_has_open_s3_bucket}}</span>
+        </div>
+      </div>
+    {{/each}}
+    {{#if details.domainData.sp_risk_score}}
+      <div>
+        <span class="p-key">Risk Score:</span>
+        <span class="p-value">{{details.domainData.sp_risk_score}}</span>
+      </div>
+    {{/if}}
+    {{#if details.domainData.sp_risk_score_explain}}
+      <div>
+        <span class="p-key">Risk Score:</span>
+        <span
+          class="p-value"
+        >{{details.domainData.sp_risk_score_explain.sp_risk_score_decider}}</span>
+      </div>
+    {{/if}}
+  {{/if}}
+{{/if}}
+{{! IPs }}
+{{#if details.ip2asn}}
+  <h1 class="p-title">
+    {{fa-icon icon="info" fixedWidth=true}}
+    ASN Information
+  </h1>
+  {{#each details.ip2asn as |info|}}
+    <div class="asn-info">
+      {{#if info.asname}}
+        <div>
+          <span class="p-key">ASN Mame:</span>
+          <span class="p-value">{{info.asname}}</span>
+        </div>
+      {{/if}}
+      {{#if info.asn}}
+        <div>
+          <span class="p-key">ASN:</span>
+          <span class="p-value">{{info.asn}}</span>
+        </div>
+      {{/if}}
+      {{#if info.asn_allocation_age}}
+        <div>
+          <span class="p-key">ASN Allocation Age:</span>
+          <span class="p-value">{{info.asn_allocation_age}}</span>
+        </div>
+      {{/if}}
+      {{#if info.asn_allocation_date}}
+        <div>
+          <span class="p-key">ASN Allocation Date:</span>
+          <span class="p-value">{{info.asn_allocation_date}}</span>
+        </div>
+      {{/if}}
+      {{#if info.asn_rank}}
+        <div>
+          <span class="p-key">ASN Rank:</span>
+          <span class="p-value">{{info.asn_rank}}</span>
+        </div>
+      {{/if}}
+      {{#if info.asn_rank_score}}
+        <div>
+          <span class="p-key">ASN Rank Score:</span>
+          <span class="p-value">{{info.asn_rank_score}}</span>
+        </div>
+      {{/if}}
+      {{#if info.asn_reputation}}
+        <div>
+          <span class="p-key">ASN Repuation:</span>
+          <span class="p-value">{{info.asn_reputation}}</span>
+        </div>
+      {{/if}}
+      {{#if info.asn_takedown_reputation}}
+        <div>
+          <span class="p-key">ASN Takedown Repuation:</span>
+          <span class="p-value">{{info.asn_takedown_reputation}}</span>
+        </div>
+      {{/if}}
+    </div>
+
+    <div class="ip-information">
+      <h1 class="p-title">
+        {{fa-icon icon="globe" fixedWidth=true}}
+        IP Information
+      </h1>
+      {{#if info.ip_reputation_score}}
+        <div>
+          <span class="p-key">IP Repuation Score:</span>
+          <span class="p-value">{{info.ip_reputation_score}}</span>
+        </div>
+      {{/if}}
+      <div>
+        <span class="p-key">IP Repuation Score:</span>
+        <span class="p-value">{{info.ip_has_expired_certificate}}</span>
+      </div>
+      <div>
+        <span class="p-key">IP has Open Directory:</span>
+        <span class="p-value">{{info.ip_has_open_directory}}</span>
+      </div>
+      <div>
+        <span class="p-key">IP is IPFS Node:</span>
+        <span class="p-value">{{info.ip_is_ipfs_node}}</span>
+      </div>
+      <div>
+        <span class="p-key">IP is TOR exit Node:</span>
+        <span class="p-value">{{info.ip_is_tor_exit_node}}</span>
+      </div>
+      {{#if info.ip_reputation_score}}
+        <div>
+          <span class="p-key">IP Repuation Score:</span>
+          <span class="p-value">{{info.ip_reputation_score}}</span>
+        </div>
+      {{/if}}
+      {{#if info.ip_ptr}}
+        <div>
+          <span class="p-key">IP PTR:</span>
+          <span class="p-value">{{info.ip_ptr}}</span>
+        </div>
+      {{/if}}
+      {{#if info.malscore}}
+        <div>
+          <span class="p-key">Malscore:</span>
+          <span class="p-value">{{info.malscore}}</span>
+        </div>
+      {{/if}}
+    </div>
+    {{! Ip location }}
+    <div class="ip-location">
+      <h1 class="p-title">
+        {{fa-icon icon="location" fixedWidth=true}}
+        IP Location
+      </h1>
+      <div>
+        <span class="p-key">Continent Code:</span>
+        <span class="p-value">{{info.ip_location.continent_code}}</span>
+      </div>
+      {{#if info.ip_location.continent_name}}
+        <div>
+          <span class="p-key">Continent Name:</span>
+          <span class="p-value">{{info.ip_location.continent_name}}</span>
+        </div>
+      {{/if}}
+      {{#if info.ip_location.country_code}}
+        <div>
+          <span class="p-key">Country Code:</span>
+          <span class="p-value">{{info.ip_location.country_code}}</span>
+        </div>
+      {{/if}}
+      <div>
+        <span class="p-key">Dyanmic DSL:</span>
+        <span class="p-value">{{info.ip_is_dsl_dynamic}}</span>
+      </div>
+      <div>
+        <span class="p-key">Dynamic DSL Score:</span>
+        <span class="p-value">{{info.ip_is_dsl_dynamic_score}}</span>
+      </div>
+      <div>
+        <span class="p-key">EU Union:</span>
+        <span class="p-value">{{info.ip_location.country_is_in_european_union}}</span>
+      </div>
+      {{#if info.ip_location.country_name}}
+        <div>
+          <span class="p-key">Country Name:</span>
+          <span class="p-value">{{info.ip_location.country_name}}</span>
+        </div>
+      {{/if}}
+    </div>
+    {{! certificates }}
+    {{#each info.scan_data.certificates as |cert|}}
+      <div class="ns-srv-reputation">
+        {{#if cert.domain}}
+          <div>
+            <span class="p-key">Domain:</span>
+            <span class="p-value">{{cert.domain}}</span>
+          </div>
+        {{/if}}
+        {{#if cert.hostname}}
+          <div>
+            <span class="p-key">Hostname:</span>
+            <span class="p-value">{{cert.hostname}}</span>
+          </div>
+        {{/if}}
+        {{#if cert.ip}}
+          <div>
+            <span class="p-key">IP:</span>
+            <span class="p-value">{{cert.ip}}</span>
+          </div>
+        {{/if}}
+        {{#if cert.is_expired}}
+          <div>
+            <span class="p-key">Expired:</span>
+            <span class="p-value">{{cert.is_expired}}</span>
+          </div>
+        {{/if}}
+        {{#if cert.issuer_common_name}}
+          <div>
+            <span class="p-key">Issuer Common Name:</span>
+            <span class="p-value">{{cert.issuer_common_name}}</span>
+          </div>
+        {{/if}}
+        {{#if cert.issuer_organization}}
+          <div>
+            <span class="p-key">Issuer Organization:</span>
+            <span class="p-value">{{cert.issuer_organization}}</span>
+          </div>
+        {{/if}}
+        {{#if cert.not_after}}
+          <div>
+            <span class="p-key">Not After:</span>
+            <span class="p-value">{{cert.not_after}}</span>
+          </div>
+        {{/if}}
+        {{#if cert.not_before}}
+          <div>
+            <span class="p-key">Not Before:</span>
+            <span class="p-value">{{cert.not_before}}</span>
+          </div>
+        {{/if}}
+        {{#if cert.scan_date}}
+          <div>
+            <span class="p-key">Scan Date:</span>
+            <span class="p-value">{{cert.scan_date}}</span>
+          </div>
+        {{/if}}
+        {{#if cert.serial_number}}
+          <div>
+            <span class="p-key">Serial Number:</span>
+            <span class="p-value">{{cert.serial_number}}</span>
+          </div>
+        {{/if}}
+      </div>
+    {{/each}}
+  {{/each}}
+{{/if}}

@@ -1,0 +1,17 @@
+{
+  "name": "silent_push",
+  "version": "1.0.0",
+  "description": "Enriches threats using Silent Push engine",
+  "main": "./integration.js",
+  "private": true,
+  "dependencies": {
+    "async": "2.1.2",
+    "dotenv": "16.3.1",
+    "postman-request": "^2.88.1-postman.33"
+  },
+  "keywords": [
+    "threat intelligence",
+    "enrichment"
+  ],
+  "author": "jorgeley@silentpush.com"
+}
