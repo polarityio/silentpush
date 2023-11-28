@@ -4,7 +4,7 @@ The **Silent Push** - Polarity Integration allow users to pull contextual inform
 
 - Name Server reputation
 - Name Server changes
-- Who Is
+- Whois
 - Risk Score
 - ASN
 - Certificates
@@ -16,9 +16,9 @@ If you don't have a Silent Push account yet, go to https://explore.silentpush.co
 
 All you need is just set the API Key in the integration options
 
-## Silent Push URL
+## Silent Push API URL
 
-The URL for your Silent Push instance.
+The API URL for your Silent Push instance. Defaults to "https://app.silentpush.com/api".
 
 ## Silent Push API Key
 
