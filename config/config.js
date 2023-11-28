@@ -33,8 +33,9 @@ module.exports = {
     {
       key: 'url',
       name: 'Silent Push URL',
-      description: 'The URL for your Silent Push instance.',
-      default: 'https://app.silentpush.com/api',
+      description:
+        "If you don't have an api key yet, sign up on https://explore.silentpush.com/register",
+      default: '',
       type: 'text',
       userCanEdit: true,
       adminOnly: true
