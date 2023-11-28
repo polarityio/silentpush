@@ -184,6 +184,17 @@ function validateOptions(userOptions, cb) {
   const errors = [];
 
   if (
+      typeof userOptions.url.value !== 'string' ||
+      (typeof userOptions.url.value === 'string' &&
+          userOptions.url.value.length === 0)
+  ) {
+    errors.push({
+      key: 'url',
+      message: 'You must provide a valid Silent Push API URL'
+    });
+  }
+
+  if (
     typeof userOptions.apiKey.value !== 'string' ||
     (typeof userOptions.apiKey.value === 'string' &&
       userOptions.apiKey.value.length === 0)
