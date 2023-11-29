@@ -1,7 +1,7 @@
 module.exports = {
+  polarityIntegrationUuid: '3133dc50-63ca-11ee-9f00-b7a8aebacae2',
   name: 'Silent Push',
   acronym: 'SP',
-  polarityIntegrationUuid: '3133dc50-63ca-11ee-9f00-b7a8aebacae2',
   request: {
     // Provide the path to your certFile. Leave an empty string to ignore this option.
     cert: '',
@@ -32,11 +32,11 @@ module.exports = {
   options: [
     {
       key: 'url',
-      name: 'Silent Push URL',
-      description: 'The URL for your Silent Push instance.',
+      name: 'Silent Push API URL',
+      description: 'The API URL for your Silent Push instance.  Defaults to "https://app.silentpush.com/api".',
       default: 'https://app.silentpush.com/api',
       type: 'text',
-      userCanEdit: true,
+      userCanEdit: false,
       adminOnly: true
     },
     {
@@ -46,7 +46,7 @@ module.exports = {
         "If you don't have an api key yet, sign up on https://explore.silentpush.com/register",
       default: '',
       type: 'password',
-      userCanEdit: true,
+      userCanEdit: false,
       adminOnly: true
     }
   ]

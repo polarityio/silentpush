@@ -1,8 +1,6 @@
 const request = require('postman-request');
 const async = require('async');
 
-require('dotenv').config();
-
 let Logger;
 let apiKey = '';
 
@@ -11,7 +9,7 @@ function startup(logger) {
 }
 
 doLookup = (entities, options, cb) => {
-  Logger.info(entities);
+  Logger.trace({ entities }, 'doLookup entities');
   apiKey = options.apiKey;
   let lookupResults = [];
   async.each(
@@ -32,45 +30,50 @@ doLookup = (entities, options, cb) => {
           next(err);
         });
       } else if (entity.isURL) {
-        parseIoC(
-          entity.value,
-          function (parsedIoC) {
-            Logger.info(`parsedIoC: ${parsedIoC}`);
-            entity.value = parsedIoC;
-            enrichDomain(entity, options, (err, result) => {
-              if (!err) {
-                lookupResults.push(result); // add to our results if there was no error
-              } else {
-                enrichIPv4(entity, options, (err, result) => {
-                  if (!err) {
-                    lookupResults.push(result);
-                  }
-                  next(err);
-                });
-              }
-              next(err);
-            });
-          },
-          options
-        );
+        parseIoC(entity.value, options, function (err, parsedIoC) {
+          if (err) {
+            return next(err);
+          }
+          Logger.trace(`parsedIoC: ${parsedIoC}`);
+          entity.value = parsedIoC;
+          enrichDomain(entity, options, (err, result) => {
+            if (!err) {
+              lookupResults.push(result); // add to our results if there was no error
+            } else {
+              enrichIPv4(entity, options, (err, result) => {
+                if (!err) {
+                  lookupResults.push(result);
+                }
+                next(err);
+              });
+            }
+            next(err);
+          });
+        });
       } else {
         next(null);
       }
     },
     function (err) {
-      Logger.trace({ lookupResults: lookupResults }, 'lookupResults');
+      if (err) {
+        Logger.error({ err }, 'doLookup error');
+      }
+      Logger.trace({ lookupResults }, 'lookupResults');
       cb(err, lookupResults);
     }
   );
 };
 
 enrichIPv4 = (entity, options, done) => {
-  Logger.info(entity);
   request(getEnrichmentURI(entity, 'ipv4', options), function (err, response, body) {
-    Logger.info(`enrichIPv4 error: ${err}`);
-    Logger.info(`enrichIPv4 response: ${JSON.stringify(response)}`);
-    Logger.info(`enrichIPv4 body: ${JSON.stringify(body)}`);
+    Logger.trace({ body }, `enrichIPv4 body`);
+
     if (err || response.statusCode !== 200) {
+      Logger.error(
+        { err, statusCode: response ? response.statusCode : 'NA' },
+        'enrichIPv4 error'
+      );
+
       // return either the error object, or the body as an error
       done(err || body);
       return;
@@ -87,15 +90,18 @@ enrichIPv4 = (entity, options, done) => {
 };
 
 enrichDomain = (entity, options, done) => {
-  Logger.info(entity);
   request(getEnrichmentURI(entity, 'domain', options), function (err, response, body) {
-    Logger.info(`enrichDomain error: ${err}`);
-    Logger.info(`enrichDomain response: ${JSON.stringify(response)}`);
-    Logger.info(`enrichDomain body: ${JSON.stringify(body)}`);
+    Logger.trace({ body }, 'enrichDomain body');
+
     if (err || response.statusCode !== 200) {
+      Logger.error(
+        { err, statusCode: response ? response.statusCode : 'NA' },
+        'enrichDomain error'
+      );
       done(err || body);
       return;
     }
+
     done(null, {
       entity: entity,
       data: {
@@ -125,7 +131,7 @@ getEnrichmentURI = (entity, type = 'ipv4', options) => {
   };
 };
 
-parseIoC = (ioc, done, options) => {
+parseIoC = (ioc, options, done) => {
   const uri = {
     url: options.url + '/v2/utils/parse-ioc/',
     body: { ioc: ioc },
@@ -136,11 +142,16 @@ parseIoC = (ioc, done, options) => {
       'User-Agent': 'PolarityIO'
     }
   };
+
   request.post(uri, function (err, response, body) {
-    Logger.info(`parseIoC error: ${err}`);
-    Logger.info(`parseIoC response: ${JSON.stringify(response)}`);
-    Logger.info(`parseIoC body: ${JSON.stringify(body)}`);
-    done(body.result);
+    if (err) {
+      Logger.error({ err }, 'parseIoC error');
+      return done(err);
+    }
+
+    Logger.trace({ body }, 'parseIoC body');
+
+    done(null, body.result);
   });
 };
 
@@ -171,6 +182,17 @@ function summary(response) {
 
 function validateOptions(userOptions, cb) {
   const errors = [];
+
+  if (
+      typeof userOptions.url.value !== 'string' ||
+      (typeof userOptions.url.value === 'string' &&
+          userOptions.url.value.length === 0)
+  ) {
+    errors.push({
+      key: 'url',
+      message: 'You must provide a valid Silent Push API URL'
+    });
+  }
 
   if (
     typeof userOptions.apiKey.value !== 'string' ||

@@ -1,12 +1,11 @@
 {
   "name": "silent_push",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Enriches threats using Silent Push engine",
   "main": "./integration.js",
   "private": true,
   "dependencies": {
-    "async": "2.1.2",
-    "dotenv": "16.3.1",
+    "async": "^3.2.5",
     "postman-request": "^2.88.1-postman.33"
   },
   "keywords": [
