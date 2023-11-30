@@ -8,7 +8,10 @@ The **Silent Push** - Polarity Integration allow users to pull contextual inform
 - Risk Score
 - ASN
 - Certificates
-- ...and much more!
+
+| ![image](images/overlay-ip.png) | ![](images/overlay-domain.png) 
+|---------------------------------|--------------------------------|
+| *IP Example*                    | *Domain Example*               |
 
 ## Configuration
 
